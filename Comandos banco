@@ -1,0 +1,24 @@
+ALTER TABLE formauto.inscricao ADD idusuarioexterno BIGINT UNSIGNED NULL;
+ALTER TABLE formauto.inscricao ADD idedital BIGINT UNSIGNED NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_nome text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_data_nascimento date NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_cpf varchar(14) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_celular varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_email text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE formauto.inscricao MODIFY COLUMN pes_sexo char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL;
+ALTER TABLE formauto.edital ADD data_hora_inicio_incricao DATETIME NULL;
+ALTER TABLE formauto.edital ADD data_hora_fim_incricao DATETIME NULL;
+ALTER TABLE formauto.edital ADD data_hora_inicio_recurso DATETIME NULL;
+ALTER TABLE formauto.edital ADD data_hora_fim_recurso DATETIME NULL;
+ALTER TABLE formauto.log ADD user_idexterno BIGINT UNSIGNED NULL;
+
+ALTER TABLE inscricao
+ADD CONSTRAINT fk_usuarioexterno
+FOREIGN KEY (idusuarioexterno)
+REFERENCES userexterno(id);
+
+ALTER TABLE inscricao
+ADD CONSTRAINT fk_idedital
+FOREIGN KEY (idedital)
+REFERENCES edital(id);
+

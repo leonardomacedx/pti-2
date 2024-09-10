@@ -1,0 +1,235 @@
+/* resources/css/inicio.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #003366;
+    color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    left: 0; /* Show sidebar by default */
+    transition: left 0.3s ease;
+}
+
+.sidebar.hide {
+    left: -250px; /* Hide sidebar */
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        left: -250px; /* Hide sidebar on mobile */
+    }
+
+    .sidebar.show {
+        left: 0; /* Show sidebar on mobile when toggled */
+    }
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+}
+
+.sidebar-header h1 {
+    font: 20px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.sidebar-header img {
+    width: 6rem;
+
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar nav ul li a {
+    display: block;
+    padding: 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #0055cc;
+}
+
+.main-content.ajustado {
+    margin-left: 0; /* Adjust for hidden sidebar */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.main-content {
+    margin-left: 250px; /* Adjust for visible sidebar */
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0; /* Adjust for hidden sidebar on mobile */
+        width: 100%;
+    }
+
+    .main-content.ajustado {
+        margin-left: 250px; /* Adjust for visible sidebar on mobile */
+        width: calc(100% - 250px);
+    }
+}
+
+.header {
+    width:97.2%;
+    background-color: #0372ad;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-left .menu-toggle {
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.header-right span {
+    margin-right: 10px;
+}
+
+.form-container {
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+    box-sizing: border-box;
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.form-group label,
+.form-group select {
+    display: block;
+    width: 100%;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+#footer {
+    height: 90px;
+    background-color: #FAF9F6;
+}
+
+.footer {
+    margin-left: 250px; /* Adjust for visible sidebar */
+    width: calc(100% - 250px);
+}
+
+.footer.ajustado {
+    margin-left: 0; /* Adjust for hidden sidebar */
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        margin-left: 0; /* Adjust for hidden sidebar on mobile */
+        width: 100%;
+    }
+
+    .footer.ajustado {
+        margin-left: 250px; /* Adjust for visible sidebar on mobile */
+        width: calc(100% - 250px);
+    }
+}
+
+#imglogo{
+   visibility: hidden;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+
+.show {display: block;}
+
+.hamburger .bar {
+    width: 100%;
+    height: 4px;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger .bar:nth-child(2) {
+    margin: 4px 0;
+}
+
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
