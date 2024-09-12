@@ -16,6 +16,26 @@ use App\Http\Controllers\emailController;
 class RegisteredUserController extends Controller
 {
 
+    public function create()
+    {
+        return view('usuario.cadastro_usuario');
+    }
+
+    public function store(Request $request)
+    {
+
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $usuario = new users();
+        $usuario->nome = $request->nome;
+        $usuario->cpf = $cpf;
+        $usuario->senha = Hash::make($request->senha);
+        if ($usuario->save()) {
+            return redirect('/')->with('success', 'Cadastro realizado com sucesso!');
+
+        }
+        return redirect('/cadastro-usuario')->with('error', 'Erro ao realizar cadastro.');
+    }
+
     public function show()
     {
     }

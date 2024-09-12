@@ -1,3 +1,48 @@
+document.addEventListener("DOMContentLoaded", function () {
+    var cpfInput = document.getElementById("cpf");
+
+    cpfInput.addEventListener("input", function () {
+        var cpf = cpfInput.value;
+
+        // Remove qualquer caractere que não seja dígito
+        cpf = cpf.replace(/\D/g, '');
+
+        // Aplica a máscara
+        if (cpf.length > 3) {
+            cpf = cpf.substring(0, 3) + '.' + cpf.substring(3);
+        }
+        if (cpf.length > 7) {
+            cpf = cpf.substring(0, 7) + '.' + cpf.substring(7);
+        }
+        if (cpf.length > 11) {
+            cpf = cpf.substring(0, 11) + '-' + cpf.substring(11, 13);
+        }
+
+        cpfInput.value = cpf;
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var phoneInput = document.getElementById("telefone");
+
+    phoneInput.addEventListener("input", function () {
+        var phone = phoneInput.value;
+
+        // // Remove qualquer caractere que não seja dígito
+        phone = phone.replace(/\D/g, '');
+
+        // Aplica a máscara
+        if (phone.length > 2) {
+            phone = '(' + phone.substring(0, 2) + ')' + phone.substring(2);
+        }
+        if (phone.length > 9) {
+            phone = phone.substring(0, 9) + '-' + phone.substring(9, 13);
+        }
+
+        phoneInput.value = phone;
+    });
+});
+
 function toggleDropdown() {
     var dropdownMenu = document.getElementById("dropdownMenu");
     dropdownMenu.classList.toggle("show");

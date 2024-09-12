@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\consultaAssinaturaController;
+use App\Http\Controllers\pacienteController;
 use App\Http\Controllers\recursoController;
+use App\Http\Controllers\atendimentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -26,28 +28,15 @@ Route::post('/cadastro-usuario/salvar', [RegisteredUserController::class, 'store
 Route::post('/logar', [AuthenticatedSessionController::class, 'store'])->name('logar');
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/inicio', [inscricaoController::class, 'inicio'])->name('inicio');
-    Route::get('/buscainscricoes', [inscricaoController::class, 'listarRequerimentoPorUsuario'])->name('busca');
+Route::get('/inicio', [atendimentoController::class, 'index'])->name('inicio');
+Route::get('/cadastro-paciente', [pacienteController::class, 'create'])->name('cadastro-paciente');
+Route::post('/salvar-paciente', [pacienteController::class, 'store'])->name('salvar-paciente');
+Route::get('/editar-usuario', [AuthenticatedSessionController::class, 'edit'])->name('edit-senha');
+Route::put('/editar-usuario/salvar', [AuthenticatedSessionController::class, 'update'])->name('update-senha');
 
-    //Rotas de requerimento
-    Route::get('/cadastro-requerimento', [inscricaoController::class, 'index'])->name('cadastro-requerimento');
-    Route::post('/requerimento/visualizar', [inscricaoController::class, 'show'])->name('ver-requerimento');
-    Route::get('/abrir-docs/{id}/{doc}', [inscricaoController::class, 'abrirDocs'])->name('abrir-docs');
-    Route::post('/requerimento/editar', [inscricaoController::class, 'edit'])->name('editar-requerimento');
-    Route::put('/requerimento/update', [inscricaoController::class, 'update'])->name('update-requerimento');
-    Route::post('/salvar-requerimento', [inscricaoController::class, 'store'])->name('salvar-requerimento');
-    Route::get('/modelodeclaracao', [inscricaoController::class, 'carta'])->name('/modelodeclaracao');
-    Route::post('/requerimento/protocolo', [inscricaoController::class, 'downloadProtocolo'])->name('baixar-protocolo');
-    //Route::post('/requerimento/parecer', [inscricaoController::class, 'downloadRequerimento'])->name('baixar-requerimento');
+Route::middleware(['auth'])->group(function () {
+
 
     //Rotas de edição de cadastro
-    Route::get('/editar-usuario', [AuthenticatedSessionController::class, 'edit'])->name('edit-senha');
-    Route::put('/editar-usuario/salvar', [AuthenticatedSessionController::class, 'update'])->name('update-senha');
 
-    //Rotas de recurso
-    Route::post('/recurso', [recursoController::class, 'index'])->name('recurso');
-    Route::post('/recurso/salvar', [recursoController::class, 'store'])->name('salvar-recurso');
-    Route::post('/recurso/visualizar', [recursoController::class, 'show'])->name('visualizar-recurso');
-    //Route::post('/recurso/parecer', [recursoController::class, 'downloadRecurso'])->name('baixar-recurso');
 });
