@@ -5,7 +5,9 @@
             @csrf
             <div class="mb-3 form-group">
                 <label for="cpf" class="form-label">CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" required>
+                <input type="text" class="form-control" id="cpf" name="cpf"
+                       @isset($cpf) value="{{ $cpf }}" @endisset
+                       required>
             </div>
             <div class="mb-3 form-group">
                 <label for="nome" class="form-label">Nome</label>

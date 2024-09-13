@@ -34,6 +34,10 @@ Route::post('/salvar-paciente', [pacienteController::class, 'store'])->name('sal
 Route::get('/editar-usuario', [AuthenticatedSessionController::class, 'edit'])->name('edit-senha');
 Route::put('/editar-usuario/salvar', [AuthenticatedSessionController::class, 'update'])->name('update-senha');
 
+Route::get('/cadastro-atendimento', [atendimentoController::class, 'create'])->name('cadastro-atendimento');
+Route::post('/salvar-atendimento', [atendimentoController::class, 'store'])->name('salvar-atendimento');
+Route::delete('/atendimentos/{id}', [atendimentoController::class, 'destroy'])->name('atendimentos.destroy');
+
 Route::middleware(['auth'])->group(function () {
 
 

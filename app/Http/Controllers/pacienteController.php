@@ -20,7 +20,8 @@ class pacienteController extends Controller
      */
     public function create()
     {
-        return view ('inicio.cadastro-paciente');
+        $cpf = session('cpf');
+        return view ('inicio.cadastro-paciente', ['cpf' => $cpf]);
     }
 
     /**
@@ -43,7 +44,8 @@ class pacienteController extends Controller
         $paciente->sexo = $request->sexo;
         $paciente->convenio = $request->convenio;
         if ($paciente->save()) {
-            return redirect()->route('inicio');
+            session(['cpf' => $cpf]);
+            return redirect()->route('cadastro-atendimento')->with('success', 'Paciente cadastrado com sucesso!');
         }
         return redirect()->back();
     }

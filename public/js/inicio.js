@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     var cpfInput = document.getElementById("cpf");
 
-    cpfInput.addEventListener("input", function () {
-        var cpf = cpfInput.value;
-
+    function formatCPF(cpf) {
         // Remove qualquer caractere que não seja dígito
         cpf = cpf.replace(/\D/g, '');
 
@@ -18,7 +16,14 @@ document.addEventListener("DOMContentLoaded", function () {
             cpf = cpf.substring(0, 11) + '-' + cpf.substring(11, 13);
         }
 
-        cpfInput.value = cpf;
+        return cpf;
+    }
+
+    // Formata o CPF ao carregar a tela
+    cpfInput.value = formatCPF(cpfInput.value);
+
+    cpfInput.addEventListener("input", function () {
+        cpfInput.value = formatCPF(cpfInput.value);
     });
 });
 

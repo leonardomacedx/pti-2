@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Models\atendimento;
+use App\Models\paciente;
 use Illuminate\Http\Request;
 
 class atendimentoController extends Controller
@@ -11,7 +14,8 @@ class atendimentoController extends Controller
      */
     public function index()
     {
-        return view('inicio.inicio');
+        $atendimentos = atendimento::where('atendido', 'N')->get();
+        return view('inicio.listar-atendimento', compact('atendimentos'));
     }
 
     /**
@@ -19,7 +23,9 @@ class atendimentoController extends Controller
      */
     public function create()
     {
-
+        $cpf = session('cpf');
+        $dataHoraAtual = now()->format('Y-m-d H:i');
+        return view('inicio.atendimento', ['dataHoraAtual' => $dataHoraAtual, 'cpf' => $cpf]);
     }
 
     /**
@@ -27,7 +33,19 @@ class atendimentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $pacienteExiste = paciente::where('cpf', $cpf)->first();
+        if (!$pacienteExiste) {
+            session(['cpf' => $cpf]);
+            return redirect()->route('cadastro-paciente')->with('error', 'Paciente não cadastrado!');
+        }
+        $atendimento = new atendimento();
+        $atendimento->cpf = $cpf;
+        $atendimento->data_hora_atendimento = $request->datahora;
+        if ($atendimento->save()) {
+            return redirect()->route('inicio')->with('success', 'Atendimento cadastrado com sucesso!');
+        }
+        return redirect()->route('cadastro-atendimento')->with('error', 'Erro ao cadastrar atendimento!');
     }
 
     /**
@@ -57,8 +75,14 @@ class atendimentoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $atendimento = atendimento::find($id);
+        if ($atendimento) {
+            $atendimento->atendido = 'S';
+            $atendimento->save();
+            return redirect()->route('inicio')->with('success', 'Atendimento marcado como atendido com sucesso!');
+        }
+        return redirect()->route('inicio')->with('error', 'Atendimento não encontrado!');
     }
 }

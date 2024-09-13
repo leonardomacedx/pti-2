@@ -12,7 +12,7 @@
 <body>
 <x-sidebar/>
 <div class="main-content">
-    <x-cadastro-paciente/>
+    <x-cadastro-paciente :cpf="$cpf"/>
 </div>
 
 </body>

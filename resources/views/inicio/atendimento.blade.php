@@ -12,7 +12,7 @@
 <body>
 <x-sidebar/>
 <div class="main-content">
-    <x-atendimento/>
+    <x-atendimento :dataHoraAtual="$dataHoraAtual" :cpf="$cpf"/>
 </div>
 
 </body>
