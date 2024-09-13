@@ -18,7 +18,25 @@ class RegisteredUserController extends Controller
 
     public function create()
     {
-        return view('usuario.cadastro_usuario');
+        return view('inicio.manutencao');
+    }
+
+    public function verificar(Request $request)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $request->query('cpf'));
+        $funcionario = users::where('cpf', $cpf)
+            ->select('nome', 'permissao_id')
+            ->first();
+
+        if ($funcionario) {
+            return response()->json([
+                'exists' => true,
+                'nome' => $funcionario->nome,
+                'permissao' => $funcionario->permissao_id
+            ]);
+        }
+
+        return response()->json(['exists' => false]);
     }
 
     public function store(Request $request)
@@ -30,34 +48,24 @@ class RegisteredUserController extends Controller
         $usuario->cpf = $cpf;
         $usuario->senha = Hash::make($request->senha);
         if ($usuario->save()) {
-            return redirect('/')->with('success', 'Cadastro realizado com sucesso!');
+            return redirect('/manutencao')->with('success', 'Cadastro realizado com sucesso!');
 
         }
         return redirect('/cadastro-usuario')->with('error', 'Erro ao realizar cadastro.');
     }
 
-    public function show()
+    public function update(Request $request)
     {
-    }
-    function gerarSenha($comprimento = 8)
-    {
-        $letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
-        $numeros = '0123456789';
-        $caracteresEspeciais = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-        $senha = '';
-        $senha .= $letrasMaiusculas[rand(0, strlen($letrasMaiusculas) - 1)];
-        $senha .= $letrasMinusculas[rand(0, strlen($letrasMinusculas) - 1)];
-        $senha .= $numeros[rand(0, strlen($numeros) - 1)];
-        $senha .= $caracteresEspeciais[rand(0, strlen($caracteresEspeciais) - 1)];
-
-        $todosCaracteres = $letrasMaiusculas . $letrasMinusculas . $numeros . $caracteresEspeciais;
-        for ($i = strlen($senha); $i < $comprimento; $i++) {
-            $senha .= $todosCaracteres[rand(0, strlen($todosCaracteres) - 1)];
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $usuario = users::where('cpf', $cpf)->first();
+        $usuario->nome = $request->nome;
+        $usuario->senha = Hash::make($request->senha);
+        if ($usuario->permissao != 1) {
+            $usuario->permissao = $request->permissao;
         }
-
-        $senha = str_shuffle($senha);
-
-        return $senha;
+        if ($usuario->save()) {
+            return redirect('/manutencao')->with('success', 'Usuário alterado com sucesso!');
+        }
+        return redirect('/manutencao')->with('error', 'Erro ao alterar usuário.');
     }
 }

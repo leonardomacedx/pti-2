@@ -7,7 +7,9 @@
         <ul>
             <li><a href="/inicio">Atendimento</a></li>
             <li><a href="/cadastro-paciente">Cadastro de paciente</a></li>
-            <li><a href="/manutencao">Manutenção</a></li>
+            @if( session('permissao') == 1)
+                <li><a href="/manutencao">Manutenção</a></li>
+            @endif
             <li><a href="/logout">Sair</a></li>
 
         </ul>

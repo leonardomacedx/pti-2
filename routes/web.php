@@ -23,20 +23,22 @@ Route::get('/', function () {
     return view('welcome');
 })->name('login');
 
-Route::get('/cadastro-usuario', [RegisteredUserController::class, 'create'])->name('cadastro-usuario');
+Route::get('/manutencao', [RegisteredUserController::class, 'create'])->name('cadastro-usuario');
 Route::post('/cadastro-usuario/salvar', [RegisteredUserController::class, 'store'])->name('salvar-usuario');
+Route::post('/editar-usuario/salvar', [RegisteredUserController::class, 'update'])->name('editar-usuario');
+
 Route::post('/logar', [AuthenticatedSessionController::class, 'store'])->name('logar');
 Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/inicio', [atendimentoController::class, 'index'])->name('inicio');
 Route::get('/cadastro-paciente', [pacienteController::class, 'create'])->name('cadastro-paciente');
 Route::post('/salvar-paciente', [pacienteController::class, 'store'])->name('salvar-paciente');
-Route::get('/editar-usuario', [AuthenticatedSessionController::class, 'edit'])->name('edit-senha');
-Route::put('/editar-usuario/salvar', [AuthenticatedSessionController::class, 'update'])->name('update-senha');
 
 Route::get('/cadastro-atendimento', [atendimentoController::class, 'create'])->name('cadastro-atendimento');
 Route::post('/salvar-atendimento', [atendimentoController::class, 'store'])->name('salvar-atendimento');
 Route::delete('/atendimentos/{id}', [atendimentoController::class, 'destroy'])->name('atendimentos.destroy');
+
+Route::get('/verificar-usuario', [RegisteredUserController::class, 'verificar'])->name('verificar-usuario');
 
 Route::middleware(['auth'])->group(function () {
 
