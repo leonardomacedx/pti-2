@@ -16,28 +16,56 @@ use App\Http\Controllers\emailController;
 class RegisteredUserController extends Controller
 {
 
-    public function show()
+    public function create()
     {
+        return view('inicio.manutencao');
     }
-    function gerarSenha($comprimento = 8)
-    {
-        $letrasMaiusculas = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $letrasMinusculas = 'abcdefghijklmnopqrstuvwxyz';
-        $numeros = '0123456789';
-        $caracteresEspeciais = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-        $senha = '';
-        $senha .= $letrasMaiusculas[rand(0, strlen($letrasMaiusculas) - 1)];
-        $senha .= $letrasMinusculas[rand(0, strlen($letrasMinusculas) - 1)];
-        $senha .= $numeros[rand(0, strlen($numeros) - 1)];
-        $senha .= $caracteresEspeciais[rand(0, strlen($caracteresEspeciais) - 1)];
 
-        $todosCaracteres = $letrasMaiusculas . $letrasMinusculas . $numeros . $caracteresEspeciais;
-        for ($i = strlen($senha); $i < $comprimento; $i++) {
-            $senha .= $todosCaracteres[rand(0, strlen($todosCaracteres) - 1)];
+    public function verificar(Request $request)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $request->query('cpf'));
+        $funcionario = users::where('cpf', $cpf)
+            ->select('nome', 'permissao_id')
+            ->first();
+
+        if ($funcionario) {
+            return response()->json([
+                'exists' => true,
+                'nome' => $funcionario->nome,
+                'permissao' => $funcionario->permissao_id
+            ]);
         }
 
-        $senha = str_shuffle($senha);
+        return response()->json(['exists' => false]);
+    }
 
-        return $senha;
+    public function store(Request $request)
+    {
+
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $usuario = new users();
+        $usuario->nome = $request->nome;
+        $usuario->cpf = $cpf;
+        $usuario->senha = Hash::make($request->senha);
+        if ($usuario->save()) {
+            return redirect('/manutencao')->with('success', 'Cadastro realizado com sucesso!');
+
+        }
+        return redirect('/cadastro-usuario')->with('error', 'Erro ao realizar cadastro.');
+    }
+
+    public function update(Request $request)
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
+        $usuario = users::where('cpf', $cpf)->first();
+        $usuario->nome = $request->nome;
+        $usuario->senha = Hash::make($request->senha);
+        if ($usuario->permissao != 1) {
+            $usuario->permissao = $request->permissao;
+        }
+        if ($usuario->save()) {
+            return redirect('/manutencao')->with('success', 'Usuário alterado com sucesso!');
+        }
+        return redirect('/manutencao')->with('error', 'Erro ao alterar usuário.');
     }
 }

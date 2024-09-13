@@ -20,12 +20,23 @@ class AuthenticatedSessionController extends Controller
         $credentials = $request->only('cpf', 'password');
         $cpf = preg_replace('/[^0-9]/', '', $request->cpf);
         $credentials['cpf'] = $cpf;
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('inicio');
+        if ($this->validarLogin($credentials)) {
+            session(['permissao' => users::where('cpf', $cpf)->first()->permissao_id]);
+            return redirect('inicio');
         } else {
             return redirect('/')->with('error', 'Usuário ou senha incorretos.');
         }
+    }
+
+    public function validarLogin($credentials)
+    {
+        $user = users::where('cpf', $credentials['cpf'])->first();
+
+        if ($user && Hash::check($credentials['password'], $user->senha)) {
+            return true;
+        }
+
+        return false;
     }
 
 //    public function edit()

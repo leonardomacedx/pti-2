@@ -1,25 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var phoneInput = document.getElementById("telefone");
-
-    phoneInput.addEventListener("input", function () {
-        var phone = phoneInput.value;
-
-        // // Remove qualquer caractere que não seja dígito
-        phone = phone.replace(/\D/g, '');
-
-        // Aplica a máscara
-        if (phone.length > 2) {
-            phone = '(' + phone.substring(0, 2) + ')' + phone.substring(2);
-        }
-        if (phone.length > 9) {
-            phone = phone.substring(0, 9) + '-' + phone.substring(9, 13);
-        }
-
-        phoneInput.value = phone;
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
     var cpfInput = document.getElementById("cpf");
 
     cpfInput.addEventListener("input", function () {
@@ -54,23 +33,13 @@ function validarForm() {
 
     var isValid = true;
     var cpf = document.getElementById("cpf").value;
-    var dataNascimento = document.getElementById("data_nascimento").value;
     var senha = document.getElementById("senha").value;
-    var confirmarSenha = document.getElementById("confirmarSenha").value;
-    var email = document.getElementById("email").value;
-    var telefone = document.getElementById("telefone").value;
-    var sexo = document.getElementById("sexo").value;
-    var nome = document.getElementById("nome_completo").value;
+    var nome = document.getElementById("nome").value;
 
     var campos = [
-        "nome_completo",
-        "email",
+        "nome",
         "cpf",
-        "telefone",
         "senha",
-        "confirmarSenha",
-        "data_nascimento",
-        "sexo"
     ];
 
     for (var campo of campos) {
@@ -80,42 +49,19 @@ function validarForm() {
         }
     }
 
-    if (!validarNome(nome)) {
-        isInvalid('nome_completo')
-        isValid = false;
-    }
-
-    if (sexo === "") {
-        isInvalid('sexo')
-        isValid = false;
-    }
-
-    if (!validaTelefone(telefone)) {
-        isInvalid('telefone')
-        isValid = false;
-    }
-
     if (!validaCPF(cpf)) {
         isInvalid('cpf')
         isValid = false;
     }
 
-    if (!validaData(dataNascimento)) {
-        isInvalid('data_nascimento')
-        isValid = false;
-    }
     if (!validarSenha(senha, confirmarSenha)) {
-        isValid = false;
-    }
-    if (!validarEmail(email)) {
-        isInvalid('email');
         isValid = false;
     }
 
     return isValid;
 }
 
-function validarSenha(senha, confirmarSenha) {
+function validarSenha(senha) {
     let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&^])[A-Za-z\d@.#$!%*?&]{8,}$/;
 
     if (senha == '') {
@@ -127,11 +73,6 @@ function validarSenha(senha, confirmarSenha) {
         return false;
     } else {
         isValid('senha');
-        if (senha !== confirmarSenha) {
-            isInvalid('confirmarSenha');
-            return false;
-        }
-        isValid('confirmarSenha');
     }
 
     return true;
@@ -146,55 +87,21 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-document.getElementById('email').addEventListener('blur', function () {
-    let email = this.value
-
-    if (!validarEmail(email) && email != '') {
-        isInvalid('email')
-    } else {
-        isValid('email')
-    }
-})
-
 document.addEventListener("DOMContentLoaded", function () {
-    var elements = [document.getElementById("senha"), document.getElementById("confirmarSenha")];
+    var element = document.getElementById("senha");
 
-    elements.forEach(function (element) {
-        element.addEventListener("blur", function () {
-            let senha = document.getElementById("senha").value;
-            let confirmarSenha = document.getElementById("confirmarSenha").value;
-
-            validarSenha(senha, confirmarSenha);
-        });
+    element.addEventListener("blur", function () {
+        let senha = document.getElementById("senha").value;
+        validarSenha(senha);
     });
 });
 
-document.getElementById('telefone').addEventListener('blur', function () {
-    let telefone = this.value
-
-    if (!validaTelefone(telefone) && telefone != '') {
-        isInvalid('telefone')
-    } else {
-        isValid('telefone')
-    }
-})
-
-document.getElementById('nome_completo').addEventListener('blur', function () {
+document.getElementById('nome').addEventListener('blur', function () {
     let nome = this.value
 
     if (!validarNome(nome) && nome != '') {
-        isInvalid('nome_completo')
+        isInvalid('nome')
     } else {
-        isValid('nome_completo')
-    }
-})
-
-document.getElementById('sexo').addEventListener('change', function () {
-    let sexo = this.value
-
-    if (sexo === "") {
-        isInvalid('sexo')
-    } else {
-        isValid('sexo')
+        isValid('nome')
     }
 })
